@@ -49,6 +49,11 @@ public class IntType extends LiquibaseDataType {
         if (database instanceof SQLiteDatabase) {
         	return new DatabaseDataType("INTEGER");
         }
+        
+        if(database instanceof MsAccessDatabase) {
+        	return new DatabaseDataType("LONG");
+        }
+        
         return super.toDatabaseDataType(database);
 
         //sqllite

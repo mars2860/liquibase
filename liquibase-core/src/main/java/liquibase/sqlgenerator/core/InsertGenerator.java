@@ -68,8 +68,9 @@ public class InsertGenerator extends AbstractSqlGenerator<InsertStatement> {
 
         for (String column : statement.getColumnValues().keySet()) {
             Object newValue = statement.getColumnValues().get(column);
-            if (newValue == null || newValue.toString().equalsIgnoreCase("NULL")) {
-                sql.append("NULL");
+            
+            if (newValue == null || (newValue.toString() != null && newValue.toString().equalsIgnoreCase("NULL"))) {
+            	sql.append("NULL");
             } else if (newValue instanceof String && !looksLikeFunctionCall(((String) newValue), database)) {
                 sql.append(DataTypeFactory.getInstance().fromObject(newValue, database).objectToSql(newValue, database));
             } else if (newValue instanceof Date) {

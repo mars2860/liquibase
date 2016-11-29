@@ -530,9 +530,15 @@ public class JdbcDatabaseSnapshot extends DatabaseSnapshot {
                     if (database instanceof OracleDatabase) {
                         return queryOracle(catalogAndSchema, table);
                     }
+                    
+                    /*if(database instanceof MsAccessDatabase)
+                    {
+                    	return queryMsAccess(catalogAndSchema,null);
+                    }*/
 
                     String catalog = ((AbstractJdbcDatabase) database).getJdbcCatalogName(catalogAndSchema);
                     String schema = ((AbstractJdbcDatabase) database).getJdbcSchemaName(catalogAndSchema);
+                    
                     return extract(databaseMetaData.getTables(catalog, schema, table, new String[]{"TABLE"}));
                 }
 

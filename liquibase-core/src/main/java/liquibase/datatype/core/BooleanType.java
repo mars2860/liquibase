@@ -7,6 +7,7 @@ import liquibase.database.core.FirebirdDatabase;
 import liquibase.database.core.HsqlDatabase;
 import liquibase.database.core.InformixDatabase;
 import liquibase.database.core.MSSQLDatabase;
+import liquibase.database.core.MsAccessDatabase;
 import liquibase.database.core.MySQLDatabase;
 import liquibase.database.core.OracleDatabase;
 import liquibase.database.core.SQLiteDatabase;
@@ -52,6 +53,10 @@ public class BooleanType extends LiquibaseDataType {
                 return new DatabaseDataType("BIT", getParameters());
             }
 	}
+        else if(database instanceof MsAccessDatabase)
+        {
+        	return new DatabaseDataType("BIT");
+        }
 
         return super.toDatabaseDataType(database);
     }

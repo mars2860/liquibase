@@ -2,6 +2,7 @@ package liquibase.snapshot;
 
 import liquibase.database.Database;
 import liquibase.database.core.InformixDatabase;
+import liquibase.database.core.MsAccessDatabase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.DatabaseException;
 import liquibase.executor.jvm.ColumnMapRowMapper;
@@ -188,7 +189,9 @@ class ResultSetCache {
                 JdbcConnection connection = (JdbcConnection) database.getConnection();
                 statement = connection.createStatement();
                 resultSet = statement.executeQuery(sql);
-                resultSet.setFetchSize(database.getFetchSize());
+                if(database.getFetchSize() > 0) { // ms access odbc driver does not support set fetch size
+            		resultSet.setFetchSize(database.getFetchSize());
+            	}
                 return extract(resultSet, informixTrimHint);
             } finally {
                 JdbcUtils.close(resultSet, statement);
@@ -224,7 +227,9 @@ class ResultSetCache {
         }
 
         protected List<CachedRow> extract(ResultSet resultSet, final boolean informixIndexTrimHint) throws SQLException {
-            resultSet.setFetchSize(database.getFetchSize());
+        	if(database.getFetchSize() > 0) { // ms access odbc driver does not support set fetch size
+        		resultSet.setFetchSize(database.getFetchSize());
+        	}
             List<Map> result;
             List<CachedRow> returnList = new ArrayList<CachedRow>();
             try {
