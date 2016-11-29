@@ -47,7 +47,7 @@ public class MsAccessDatabase extends AbstractJdbcDatabase {
 	protected String getDefaultDatabaseProductName() {
 		return PRODUCT_NAME;
 	}
-	
+
 	@Override
 	public int getDatabaseMajorVersion() throws DatabaseException {
 		// this method is not supported by jdbc-odbc driver, always return 1
@@ -88,6 +88,34 @@ public class MsAccessDatabase extends AbstractJdbcDatabase {
 	@Override
 	public Integer getFetchSize() {
 		return 0;
+	}
+	
+	@Override
+	public String escapeColumnName(String catalogName, String schemaName, String tableName, String columnName) {
+		return "[" + columnName + "]";
+	}
+	
+	@Override
+	public String escapeColumnName(	String catalogName,
+									String schemaName,
+									String tableName,
+									String columnName,
+									boolean quoteNamesThatMayBeFunctions) {
+		return "[" + columnName + "]";
+	}
+	
+	@Override
+	public String escapeColumnNameList(String columnNames) {
+		String result = "";
+		
+		for(String column : columnNames.split(",")) {
+			if(result.length() > 0 ) {
+				result += ", ";
+			}
+			result += "[" + column + "]";
+		}
+		
+		return result;
 	}
 
 	@Override

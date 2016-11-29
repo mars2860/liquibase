@@ -123,6 +123,8 @@ public class ClobType extends LiquibaseDataType {
             if (originalDefinition.toLowerCase().startsWith("text")) {
                 return new DatabaseDataType("TEXT");
             }
+        } else if(database instanceof MsAccessDatabase) {
+        	return new DatabaseDataType("LONGTEXT");
         }
         return super.toDatabaseDataType(database);
     }
